@@ -69,7 +69,7 @@ class HDR2LDR_finetune(object):
             print(' [*] Load SUCCESS')
         inNames = os.listdir('./output')
         # read on batch for testing, otherwise the performance drops
-        for i in xrange(self.batch_size):
+        for i in range(self.batch_size):
             if i == 0:
                 inp = img_io.readEXR('./output/' + inNames[i])
                 inp = np.expand_dims(inp, 0)
@@ -79,7 +79,7 @@ class HDR2LDR_finetune(object):
                 inp = np.concatenate([inp, inp1], 0)
         print inp.shape
         images = self.sess.run(self.pred, feed_dict={self.images:inp})
-        for i in xrange(self.batch_size):
+        for i in range(self.batch_size):
 
             res = np.reshape(images[i,...], [self.im_height, self.im_width,3])
             res = np.minimum(np.maximum(res, 0.), 1.)
