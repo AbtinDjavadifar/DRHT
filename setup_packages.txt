@@ -1,0 +1,4 @@
+conda install -c anaconda tensorflow==1.14
+pip install tensorlayer==1.4.1
+pip install numpy==1.16.2
+pip install scipy==1.1.0
