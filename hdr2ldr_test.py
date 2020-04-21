@@ -5,7 +5,7 @@ import os
 
 flags = tf.app.flags
 flags.DEFINE_integer("epoch", 100, "Number of epoch [100]")
-flags.DEFINE_integer("batch_size", 32, "The size of batch images [32]")
+flags.DEFINE_integer("batch_size", 4, "The size of batch images [32]")
 flags.DEFINE_integer("im_height", 512, "The height of image to use [64]")
 flags.DEFINE_integer("im_width", 512, "The size of label to produce [128]")
 flags.DEFINE_string("dataset_dir", "dataSet_1", "Name of dataset directory [dataSet_1]")
