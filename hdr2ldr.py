@@ -67,24 +67,29 @@ class HDR2LDR_finetune(object):
         print('Testing...')
         if self.load(self.checkpoint_dir):
             print(' [*] Load SUCCESS')
-        inNames = os.listdir('./output')
+        inNames = sorted(os.listdir('./output'))
+        print(len(inNames))
+        j = 0
         # read on batch for testing, otherwise the performance drops
-        for i in range(self.batch_size):
-            if i == 0:
-                inp = img_io.readEXR('./output/' + inNames[i])
-                inp = np.expand_dims(inp, 0)
-            else:
-                inp1 = img_io.readEXR('./output/' + inNames[i])
-                inp1 = np.expand_dims(inp1, 0)
-                inp = np.concatenate([inp, inp1], 0)
-        print inp.shape
-        images = self.sess.run(self.pred, feed_dict={self.images:inp})
-        for i in range(self.batch_size):
+        while j < len(inNames)-1:
+            for i in range(self.batch_size):
+                if i == 0:
+                    inp = img_io.readEXR('./output/' + inNames[j])
+                    inp = np.expand_dims(inp, 0)
+                else:
+                    inp1 = img_io.readEXR('./output/' + inNames[j])
+                    inp1 = np.expand_dims(inp1, 0)
+                    inp = np.concatenate([inp, inp1], 0)
+                j += 1
+            print(inp.shape)
+            images = self.sess.run(self.pred, feed_dict={self.images:inp})
+            for i in range(self.batch_size):
 
-            res = np.reshape(images[i,...], [self.im_height, self.im_width,3])
-            res = np.minimum(np.maximum(res, 0.), 1.)
-            resName = './samples/'+ inNames[i][:-4]+'.jpg'
-            cv2.imwrite(resName, res* 255.)
+                res = np.reshape(images[i,...], [self.im_height, self.im_width,3])
+                res = np.minimum(np.maximum(res, 0.), 1.)
+                print(j-self.batch_size+i)
+                resName = './samples/'+ inNames[(j-self.batch_size+i)][:-4]+'.jpg'
+                cv2.imwrite(resName, res* 255.)
 
 
     def forward(self):
